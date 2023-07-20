@@ -7,6 +7,11 @@ const CardList = styled.div`
   gap: 40px 80px;
 
   margin-bottom: 120px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(1, auto);
+    place-content: center;
+  }
 `;
 
 const HomeList = () => (
