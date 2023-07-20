@@ -1,5 +1,17 @@
+import Footer from "./components/Footer";
+import Header from "./components/Header";
+import HomeList from "./components/HomeList";
+import { GlobalCss } from "./styles";
+
 function App() {
-  return <h1>OLÁ</h1>;
+  return (
+    <>
+      <GlobalCss />
+      <Header />
+      <HomeList />
+      <Footer />
+    </>
+  );
 }
 
 export default App;
