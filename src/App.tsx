@@ -1,16 +1,15 @@
+import { BrowserRouter } from "react-router-dom";
 import Footer from "./components/Footer";
-import Header from "./components/Header";
-import HomeList from "./components/HomeList";
+import Pages from "./routes";
 import { GlobalCss } from "./styles";
 
 function App() {
   return (
-    <>
+    <BrowserRouter>
       <GlobalCss />
-      <Header />
-      <HomeList />
+      <Pages />
       <Footer />
-    </>
+    </BrowserRouter>
   );
 }
 

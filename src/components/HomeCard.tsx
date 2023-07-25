@@ -4,6 +4,7 @@ import { colors } from "../styles";
 
 import star from "../assets/images/estrela.jpg";
 import Button from "./Button";
+import { Link } from "react-router-dom";
 
 const Card = styled.div`
   border: 1px solid ${colors.foreground};
@@ -88,7 +89,9 @@ const HomeCard = () => (
         rápida, embalagens cuidadosas e qualidade garantida.Experimente o Japão
         sem sair do lar com nosso delivery!
       </p>
-      <Button>Saiba Mais</Button>
+      <Link to="/profiles">
+        <Button>Saiba Mais</Button>
+      </Link>
     </div>
   </Card>
 );

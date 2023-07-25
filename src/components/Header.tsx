@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 import logo from "../assets/images/logo.jpg";
 import headerBg from "../assets/images/header-bg.jpg";
+import { Link } from "react-router-dom";
 
 const Head = styled.header`
   background-image: url("${headerBg}");
@@ -23,7 +24,9 @@ const Head = styled.header`
 
 const Header = () => (
   <Head>
-    <img src={logo} alt="Logo" />
+    <Link to="/">
+      <img src={logo} alt="Logo" />
+    </Link>
     <h2>
       Viva experiências gastronômicas
       <br />
