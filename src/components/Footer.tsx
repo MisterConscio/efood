@@ -5,6 +5,7 @@ import logo from "../assets/images/logo.jpg";
 import insta from "../assets/images/insta-icon.svg";
 import face from "../assets/images/face-icon.svg";
 import twitter from "../assets/images/twitter-icon.svg";
+import { Link } from "react-router-dom";
 
 const Foot = styled.footer`
   background-color: ${colors.backgroundAlt};
@@ -13,6 +14,7 @@ const Foot = styled.footer`
   text-align: center;
 
   > * {
+    display: inline-block;
     margin-inline: auto;
   }
 
@@ -27,7 +29,9 @@ const Foot = styled.footer`
 
 const Footer = () => (
   <Foot>
-    <img src={logo} alt="Logo" />
+    <Link to="/">
+      <img src={logo} alt="Logo" />
+    </Link>
     <ul className="social-links">
       <li>
         <a href="#">

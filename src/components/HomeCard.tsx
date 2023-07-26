@@ -3,6 +3,8 @@ import Tag from "./Tag";
 import { colors } from "../styles";
 
 import star from "../assets/images/estrela.jpg";
+import macarone from "../assets/images/marcarone.jpg";
+
 import Button from "./Button";
 import { Link } from "react-router-dom";
 
@@ -66,28 +68,27 @@ const HomeCard = () => (
   <Card>
     <img
       className="card-img"
-      src="https://placehold.it/472x217"
+      src={macarone}
       width={472}
       height={217}
       loading="lazy"
     />
     <div className="card-category">
-      <Tag label="Destaque da semana" />
-      <Tag label="Japonesa" />
+      <Tag label="Italiana" />
     </div>
     <div className="card-body">
       <div className="card-title">
-        <h3>Hioki Sushi</h3>
+        <h3>La Dolce Vita Trattoria</h3>
         <div className="card-title-note">
-          <span>4.9 </span>
+          <span>4.6 </span>
           <img className="card-title-note-img" src={star} alt="Star" />
         </div>
       </div>
       <p className="card-desc">
-        Peça já o melhor da culinária japonesa no conforto da sua casa! Sushis
-        frescos, sashimis deliciosos e pratos quentes irresistíveis. Entrega
-        rápida, embalagens cuidadosas e qualidade garantida.Experimente o Japão
-        sem sair do lar com nosso delivery!
+        A La Dolce Vita Trattoria leva a autêntica cozinha italiana até você!
+        Desfrute de massas caseiras, pizzas deliciosas e risotos incríveis, tudo
+        no conforto do seu lar. Entrega rápida, pratos bem embalados e sabor
+        inesquecível. Peça já!
       </p>
       <Link to="/profiles">
         <Button>Saiba Mais</Button>

@@ -25,6 +25,14 @@ const Head = styled.header`
     > * {
       flex-basis: 100%;
     }
+
+    h3:nth-child(1) {
+      text-align: left;
+    }
+
+    h3:last-child {
+      text-align: right;
+    }
   }
 
   .banner {
