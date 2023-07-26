@@ -33,8 +33,7 @@ const Card = styled.div`
     max-width: 300px;
 
     .card-img {
-      max-width: 300px;
-      transform: translate(-2px, -2px);
+      width: 100%;
     }
   }
 `;

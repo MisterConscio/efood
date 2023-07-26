@@ -8,6 +8,11 @@ const Grid = styled.main`
   gap: 32px;
 
   margin-bottom: 120px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(1, auto);
+    place-content: center;
+  }
 `;
 
 const Profiles = () => (
