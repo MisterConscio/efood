@@ -4,6 +4,8 @@ import logo from "../assets/images/logo.jpg";
 import headerBg from "../assets/images/header-bg.jpg";
 import headerCustom from "../assets/images/custom-header.jpg";
 import { Link } from "react-router-dom";
+import { Restaurant } from "../pages/Home";
+import { capitalizeWord } from "./HomeCard";
 
 const Head = styled.header`
   background-image: url("${headerBg}");
@@ -36,31 +38,46 @@ const Head = styled.header`
   }
 
   .banner {
-    background-image: url("${headerCustom}");
     background-size: cover;
 
     width: 100%;
     height: 280px;
 
     text-align: left;
-  }
 
-  .banner .container {
-    height: 100%;
+    position: relative;
 
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    color: white;
-    font-size: 32px;
+    .container {
+      z-index: 1;
+      position: relative;
+      height: 100%;
 
-    p {
-      font-weight: 100;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      color: white;
+      font-size: 32px;
+
+      p {
+        font-weight: 100;
+      }
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
     }
   }
 `;
 
-const CustomHeader = () => (
+interface Props extends Restaurant { }
+
+const CustomHeader = ({ titulo, tipo, capa }: Props) => (
   <Head>
     <div className="title container">
       <h3>Restaurantes</h3>
@@ -69,10 +86,10 @@ const CustomHeader = () => (
       </Link>
       <h3>0 produtos(s) no carrinho</h3>
     </div>
-    <div className="banner">
+    <div className="banner" style={{ backgroundImage: `url(${capa})` }}>
       <div className="container">
-        <p>Italiana</p>
-        <h2>La Dolce Vita Trattoria</h2>
+        <p>{capitalizeWord(tipo)}</p>
+        <h2>{titulo}</h2>
       </div>
     </div>
   </Head>

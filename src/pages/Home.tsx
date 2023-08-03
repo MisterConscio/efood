@@ -24,6 +24,14 @@ export type Restaurant = {
   capa: string;
   descricao: string;
   tipo: string;
+  cardapio: {
+    foto: string;
+    preco: number;
+    id: number;
+    nome: string;
+    descricao: string;
+    porcao: string;
+  };
 };
 
 const Home = () => {

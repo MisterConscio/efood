@@ -3,7 +3,6 @@ import Tag from "./Tag";
 import { colors } from "../styles";
 
 import star from "../assets/images/estrela.jpg";
-import macarone from "../assets/images/marcarone.jpg";
 
 import Button from "./Button";
 import { Link } from "react-router-dom";
@@ -18,6 +17,7 @@ const Card = styled.div`
 
   .card-img {
     transform: translate(-1px, -1px);
+    object-fit: cover;
   }
 
   .card-category {
@@ -65,6 +65,10 @@ const Card = styled.div`
   }
 `;
 
+export const capitalizeWord = (word: string) => {
+  return word.charAt(0).toUpperCase() + word.slice(1);
+};
+
 interface Props extends Restaurant { }
 
 const HomeCard = ({
@@ -74,11 +78,8 @@ const HomeCard = ({
   capa,
   avaliacao,
   destacado,
+  id,
 }: Props) => {
-  const capitalizeWord = (word: string) => {
-    return word.charAt(0).toUpperCase() + word.slice(1);
-  };
-
   return (
     <Card>
       <img
@@ -101,7 +102,7 @@ const HomeCard = ({
           </div>
         </div>
         <p className="card-desc">{descricao}</p>
-        <Link to="/profiles">
+        <Link to={`/restaurante/${id}`}>
           <Button>Saiba Mais</Button>
         </Link>
       </div>

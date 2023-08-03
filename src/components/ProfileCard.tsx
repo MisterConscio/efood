@@ -3,13 +3,17 @@ import { colors } from "../styles";
 
 import Button from "./Button";
 
-import marguerita from "../assets/images/marguerita.jpg";
+import { Restaurant } from "../pages/Home";
 
 const Card = styled.div`
   background-color: ${colors.foreground};
   color: ${colors.background};
 
   padding: 8px;
+
+  .card-img {
+    object-fit: cover;
+  }
 
   .card-title {
     margin-block: 8px;
@@ -38,23 +42,22 @@ const Card = styled.div`
   }
 `;
 
-const ProfileCard = () => (
+interface Props extends Restaurant { }
+
+const ProfileCard = ({ foto, nome, descricao }: Props) => (
   <Card>
     <img
       className="card-img"
-      src={marguerita}
+      src={foto}
       width={304}
       height={167}
       loading="lazy"
     />
     <div className="card-body">
       <div className="card-title">
-        <h3>Pizza Marguerita</h3>
+        <h3>{nome}</h3>
       </div>
-      <p className="card-desc">
-        A clássica Marguerita: molho de tomate suculento, mussarela derretida,
-        manjericão fresco e um toque de azeite. Sabor e simplicidade!
-      </p>
+      <p className="card-desc">{descricao}</p>
       <Button profileBtn>Adicionar ao carrinho</Button>
     </div>
   </Card>
