@@ -7,6 +7,7 @@ import macarone from "../assets/images/marcarone.jpg";
 
 import Button from "./Button";
 import { Link } from "react-router-dom";
+import { Restaurant } from "../pages/Home";
 
 const Card = styled.div`
   border: 1px solid ${colors.foreground};
@@ -64,37 +65,48 @@ const Card = styled.div`
   }
 `;
 
-const HomeCard = () => (
-  <Card>
-    <img
-      className="card-img"
-      src={macarone}
-      width={472}
-      height={217}
-      loading="lazy"
-    />
-    <div className="card-category">
-      <Tag label="Italiana" />
-    </div>
-    <div className="card-body">
-      <div className="card-title">
-        <h3>La Dolce Vita Trattoria</h3>
-        <div className="card-title-note">
-          <span>4.6 </span>
-          <img className="card-title-note-img" src={star} alt="Star" />
-        </div>
+interface Props extends Restaurant { }
+
+const HomeCard = ({
+  titulo,
+  descricao,
+  tipo,
+  capa,
+  avaliacao,
+  destacado,
+}: Props) => {
+  const capitalizeWord = (word: string) => {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  };
+
+  return (
+    <Card>
+      <img
+        className="card-img"
+        src={capa}
+        width={472}
+        height={217}
+        loading="lazy"
+      />
+      <div className="card-category">
+        {destacado && <Tag label="Destaque da Semana" />}
+        <Tag label={capitalizeWord(tipo)} />
       </div>
-      <p className="card-desc">
-        A La Dolce Vita Trattoria leva a autêntica cozinha italiana até você!
-        Desfrute de massas caseiras, pizzas deliciosas e risotos incríveis, tudo
-        no conforto do seu lar. Entrega rápida, pratos bem embalados e sabor
-        inesquecível. Peça já!
-      </p>
-      <Link to="/profiles">
-        <Button>Saiba Mais</Button>
-      </Link>
-    </div>
-  </Card>
-);
+      <div className="card-body">
+        <div className="card-title">
+          <h3>{titulo}</h3>
+          <div className="card-title-note">
+            <span>{avaliacao + " "}</span>
+            <img className="card-title-note-img" src={star} alt="Star" />
+          </div>
+        </div>
+        <p className="card-desc">{descricao}</p>
+        <Link to="/profiles">
+          <Button>Saiba Mais</Button>
+        </Link>
+      </div>
+    </Card>
+  );
+};
 
 export default HomeCard;
