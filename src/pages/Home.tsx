@@ -16,6 +16,15 @@ const CardList = styled.div`
   }
 `;
 
+type Cardapio = {
+  foto: string;
+  id: number;
+  preco: number;
+  nome: string;
+  descricao: string;
+  porcao: string;
+};
+
 export type Restaurant = {
   id: number;
   titulo: string;
@@ -24,14 +33,7 @@ export type Restaurant = {
   capa: string;
   descricao: string;
   tipo: string;
-  cardapio: {
-    foto: string;
-    preco: number;
-    id: number;
-    nome: string;
-    descricao: string;
-    porcao: string;
-  };
+  cardapio: Cardapio[];
 };
 
 const Home = () => {

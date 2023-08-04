@@ -19,7 +19,8 @@ const Grid = styled.main`
 `;
 
 const RestaurantPage = () => {
-  const [cardapio, setCardapio] = useState<Restaurant>();
+  const [restaurant, setRestaurant] = useState<Restaurant>();
+
   const { id: pageId } = useParams();
 
   useEffect(() => {
@@ -31,7 +32,7 @@ const RestaurantPage = () => {
         return response.json();
       })
       .then((data) => {
-        setCardapio(data);
+        setRestaurant(data);
       })
       .catch((error) => {
         if (!controller.signal.aborted) {
@@ -43,15 +44,15 @@ const RestaurantPage = () => {
     };
   }, [pageId]);
 
-  if (!cardapio) {
+  if (!restaurant) {
     return <div>Carregando...</div>;
   }
 
   return (
     <>
-      <CustomHeader {...cardapio} />
+      <CustomHeader {...restaurant} />
       <Grid className="container">
-        {cardapio.cardapio.map((item) => (
+        {restaurant.cardapio.map((item) => (
           <ProfileCard key={item.id} {...item} />
         ))}
       </Grid>

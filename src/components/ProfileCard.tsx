@@ -3,7 +3,6 @@ import { colors } from "../styles";
 
 import Button from "./Button";
 
-import { Restaurant } from "../pages/Home";
 import { useEffect, useRef, useState } from "react";
 
 const Card = styled.div`
@@ -114,7 +113,13 @@ export const priceFormat = (price = 0) => {
   }).format(price);
 };
 
-interface Props extends Restaurant { }
+type Props = {
+  foto: string;
+  preco: number;
+  nome: string;
+  descricao: string;
+  porcao: string;
+};
 
 const ProfileCard = ({ foto, nome, porcao, preco, descricao }: Props) => {
   const [showModal, setShowModal] = useState(false);

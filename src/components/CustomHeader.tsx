@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 import logo from "../assets/images/logo.jpg";
 import headerBg from "../assets/images/header-bg.jpg";
-import headerCustom from "../assets/images/custom-header.jpg";
 import { Link } from "react-router-dom";
 import { Restaurant } from "../pages/Home";
 import { capitalizeWord } from "./HomeCard";
@@ -75,7 +74,7 @@ const Head = styled.header`
   }
 `;
 
-interface Props extends Restaurant { }
+interface Props extends Restaurant {}
 
 const CustomHeader = ({ titulo, tipo, capa }: Props) => (
   <Head>
