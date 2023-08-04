@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { colors } from "../styles";
+import { MouseEventHandler } from "react";
 
 const Btn = styled.button<{ profileBtn: boolean }>`
   background-color: ${colors.foreground};
@@ -27,13 +28,19 @@ const Btn = styled.button<{ profileBtn: boolean }>`
 `;
 
 type Props = {
-  children: string;
+  children: string | string[];
   type?: "button" | "reset" | undefined;
   profileBtn?: boolean;
+  onClick?: MouseEventHandler;
 };
 
-const Button = ({ children, type = "button", profileBtn = false }: Props) => (
-  <Btn profileBtn={profileBtn} type={type}>
+const Button = ({
+  children,
+  type = "button",
+  profileBtn = false,
+  onClick,
+}: Props) => (
+  <Btn onClick={onClick} profileBtn={profileBtn} type={type}>
     {children}
   </Btn>
 );

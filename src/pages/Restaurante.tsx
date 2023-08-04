@@ -31,8 +31,6 @@ const RestaurantPage = () => {
         return response.json();
       })
       .then((data) => {
-        const { cardapio } = data;
-        console.log(cardapio);
         setCardapio(data);
       })
       .catch((error) => {
