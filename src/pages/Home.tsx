@@ -1,7 +1,9 @@
+import { useGetRestaurantsQuery } from "../services/api";
+
 import styled from "styled-components";
+
 import HomeCard from "../components/HomeCard";
 import Header from "../components/Header";
-import { useEffect, useState } from "react";
 
 const CardList = styled.div`
   display: grid;
@@ -37,39 +39,45 @@ export type Restaurant = {
 };
 
 const Home = () => {
-  const [restaurants, setRestaurant] = useState<Restaurant[]>([]);
+  const { data: restaurants } = useGetRestaurantsQuery();
 
-  useEffect(() => {
-    const controller = new AbortController();
-    fetch("https://fake-api-tau.vercel.app/api/efood/restaurantes", {
-      signal: controller.signal,
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setRestaurant(data);
-      })
-      .catch((error) => {
-        if (!controller.signal.aborted) {
-          console.error("Error:", error);
-        }
-      });
-    return () => {
-      controller.abort();
-    };
-  }, []);
+  // const [restaurants, setRestaurant] = useState<Restaurant[]>([]);
 
-  return (
-    <>
-      <Header />
-      <CardList className="container">
-        {restaurants.map((restaurant) => (
-          <HomeCard key={restaurant.id} {...restaurant} />
-        ))}
-      </CardList>
-    </>
-  );
+  // useEffect(() => {
+  //   const controller = new AbortController();
+  //   fetch("https://fake-api-tau.vercel.app/api/efood/restaurantes", {
+  //     signal: controller.signal,
+  //   })
+  //     .then((response) => {
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       setRestaurant(data);
+  //     })
+  //     .catch((error) => {
+  //       if (!controller.signal.aborted) {
+  //         console.error("Error:", error);
+  //       }
+  //     });
+  //   return () => {
+  //     controller.abort();
+  //   };
+  // }, []);
+
+  if (restaurants) {
+    return (
+      <>
+        <Header />
+        <CardList className="container">
+          {restaurants.map((restaurant) => (
+            <HomeCard key={restaurant.id} {...restaurant} />
+          ))}
+        </CardList>
+      </>
+    );
+  } else {
+    return <h4>Carregando...</h4>;
+  }
 };
 
 export default Home;
