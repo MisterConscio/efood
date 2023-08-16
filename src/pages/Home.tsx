@@ -18,7 +18,7 @@ const CardList = styled.div`
   }
 `;
 
-type Cardapio = {
+export type Cardapio = {
   foto: string;
   id: number;
   preco: number;
@@ -40,29 +40,6 @@ export type Restaurant = {
 
 const Home = () => {
   const { data: restaurants } = useGetRestaurantsQuery();
-
-  // const [restaurants, setRestaurant] = useState<Restaurant[]>([]);
-
-  // useEffect(() => {
-  //   const controller = new AbortController();
-  //   fetch("https://fake-api-tau.vercel.app/api/efood/restaurantes", {
-  //     signal: controller.signal,
-  //   })
-  //     .then((response) => {
-  //       return response.json();
-  //     })
-  //     .then((data) => {
-  //       setRestaurant(data);
-  //     })
-  //     .catch((error) => {
-  //       if (!controller.signal.aborted) {
-  //         console.error("Error:", error);
-  //       }
-  //     });
-  //   return () => {
-  //     controller.abort();
-  //   };
-  // }, []);
 
   if (restaurants) {
     return (

@@ -1,8 +1,14 @@
+import { useDispatch, useSelector } from "react-redux";
+
+import { RootReducer } from "../store";
+import { close, remove } from "../store/cart";
+
 import styled from "styled-components";
 import { colors } from "../styles";
-
 import trashIcon from "../assets/images/trash-icon.png";
+
 import Button from "./Button";
+import { priceFormat } from "./ProfileCard";
 
 const Container = styled.div`
   position: fixed;
@@ -80,51 +86,45 @@ const Item = styled.li`
 `;
 
 const Cart = () => {
+  const { isOpen, items } = useSelector((state: RootReducer) => state.cart);
+  const dispatch = useDispatch();
+
+  const closeCart = () => {
+    dispatch(close());
+  };
+
+  const getTotalPrice = () => {
+    return items.reduce((sum, current) => {
+      return (sum += current.preco);
+    }, 0);
+  };
+
   return (
-    <Container>
-      <Overlay />
+    <Container style={{ display: isOpen ? "flex" : "none" }}>
+      <Overlay onClick={closeCart} />
       <SidedBar>
         <ul className="cart-list">
-          <Item>
-            <img
-              className="cart-image"
-              src="https://placehold.it/80"
-              height={80}
-            />
-            <div className="cart-content">
-              <h3>Item</h3>
-              <span>R$ 2.000,00</span>
-            </div>
-            <img
-              className="trash-icon-img"
-              src={trashIcon}
-              alt="Trash Icon"
-              title="Delete"
-              height={16}
-            />
-          </Item>
-          <Item>
-            <img
-              className="cart-image"
-              src="https://placehold.it/80"
-              height={80}
-            />
-            <div className="cart-content">
-              <h3>Item</h3>
-              <span>R$ 2.000,00</span>
-            </div>
-            <img
-              className="trash-icon-img"
-              src={trashIcon}
-              alt="Trash Icon"
-              title="Delete"
-              height={16}
-            />
-          </Item>
+          {items.map((item) => (
+            <Item key={item.id}>
+              <img className="cart-image" src={item.foto} height={80} />
+              <div className="cart-content">
+                <h3>{item.nome}</h3>
+                <span>{priceFormat(item.preco)}</span>
+              </div>
+              <img
+                className="trash-icon-img"
+                src={trashIcon}
+                alt="Trash Icon"
+                title="Delete"
+                height={16}
+                onClick={() => dispatch(remove(item.id))}
+              />
+            </Item>
+          ))}
         </ul>
         <div className="price-total">
           <p>Valor total</p>
-          <span>R$ 182,70</span>
+          <span>{priceFormat(getTotalPrice())}</span>
         </div>
         <Button profileBtn type="button">
           Continuar com a entrega

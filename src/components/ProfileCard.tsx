@@ -4,6 +4,9 @@ import { colors } from "../styles";
 import Button from "./Button";
 
 import { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { add, open } from "../store/cart";
+import { Cardapio } from "../pages/Home";
 
 const Card = styled.div`
   background-color: ${colors.foreground};
@@ -114,16 +117,16 @@ export const priceFormat = (price = 0) => {
 };
 
 type Props = {
-  foto: string;
-  preco: number;
-  nome: string;
-  descricao: string;
-  porcao: string;
+  cardapio: Cardapio;
 };
 
-const ProfileCard = ({ foto, nome, porcao, preco, descricao }: Props) => {
+const ProfileCard = ({ cardapio }: Props) => {
+  const { foto, nome, porcao, preco, descricao } = cardapio;
+
   const [showModal, setShowModal] = useState(false);
   const dialogRef = useRef<HTMLDialogElement>(null);
+
+  const dispath = useDispatch();
 
   useEffect(() => {
     if (showModal) {
@@ -139,6 +142,12 @@ const ProfileCard = ({ foto, nome, porcao, preco, descricao }: Props) => {
 
   const handleModalOpen = () => {
     setShowModal(true);
+  };
+
+  const addPrato = () => {
+    dispath(add(cardapio));
+    handleModalClose();
+    dispath(open());
   };
 
   return (
@@ -158,7 +167,7 @@ const ProfileCard = ({ foto, nome, porcao, preco, descricao }: Props) => {
           <p className="card-desc">{descricao}</p>
         </div>
         <Button onClick={handleModalOpen} profileBtn>
-          Adicionar ao carrinho
+          Mais detalhes
         </Button>
       </Card>
       {showModal && (
@@ -180,7 +189,7 @@ const ProfileCard = ({ foto, nome, porcao, preco, descricao }: Props) => {
               <h4>{nome}</h4>
               <p>{descricao}</p>
               <p>Serve: de {porcao}</p>
-              <Button profileBtn>
+              <Button profileBtn onClick={addPrato}>
                 Adicionar ao carrinho - {priceFormat(preco)}
               </Button>
             </div>

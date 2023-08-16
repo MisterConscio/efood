@@ -32,7 +32,7 @@ const RestaurantPage = () => {
       <CustomHeader {...restaurant} />
       <Grid className="container">
         {restaurant.cardapio.map((item) => (
-          <ProfileCard key={item.id} {...item} />
+          <ProfileCard key={item.id} cardapio={item} />
         ))}
       </Grid>
     </>

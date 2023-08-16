@@ -1,8 +1,14 @@
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+
+import { open } from "../store/cart";
+import { RootReducer } from "../store";
+
 import styled from "styled-components";
 
 import logo from "../assets/images/logo.jpg";
 import headerBg from "../assets/images/header-bg.jpg";
-import { Link } from "react-router-dom";
+
 import { Restaurant } from "../pages/Home";
 import { capitalizeWord } from "./HomeCard";
 
@@ -33,6 +39,7 @@ const Head = styled.header`
 
     h3:last-child {
       text-align: right;
+      cursor: pointer;
     }
   }
 
@@ -74,24 +81,33 @@ const Head = styled.header`
   }
 `;
 
-interface Props extends Restaurant {}
+interface Props extends Restaurant { }
 
-const CustomHeader = ({ titulo, tipo, capa }: Props) => (
-  <Head>
-    <div className="title container">
-      <h3>Restaurantes</h3>
-      <Link to="/">
-        <img src={logo} alt="Logo" />
-      </Link>
-      <h3>0 produtos(s) no carrinho</h3>
-    </div>
-    <div className="banner" style={{ backgroundImage: `url(${capa})` }}>
-      <div className="container">
-        <p>{capitalizeWord(tipo)}</p>
-        <h2>{titulo}</h2>
+const CustomHeader = ({ titulo, tipo, capa }: Props) => {
+  const { items } = useSelector((state: RootReducer) => state.cart);
+  const dispatch = useDispatch();
+
+  const openCart = () => {
+    dispatch(open());
+  };
+
+  return (
+    <Head>
+      <div className="title container">
+        <h3>Restaurantes</h3>
+        <Link to="/">
+          <img src={logo} alt="Logo" />
+        </Link>
+        <h3 onClick={openCart}>{items.length} produtos(s) no carrinho</h3>
       </div>
-    </div>
-  </Head>
-);
+      <div className="banner" style={{ backgroundImage: `url(${capa})` }}>
+        <div className="container">
+          <p>{capitalizeWord(tipo)}</p>
+          <h2>{titulo}</h2>
+        </div>
+      </div>
+    </Head>
+  );
+};
 
 export default CustomHeader;
