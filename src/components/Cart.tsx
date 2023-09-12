@@ -9,6 +9,8 @@ import trashIcon from "../assets/images/trash-icon.png";
 
 import Button from "./Button";
 import { priceFormat } from "./ProfileCard";
+import { useState } from "react";
+import Shipment, { CardPayment } from "./ShipmentForm";
 
 const Container = styled.div`
   position: fixed;
@@ -47,6 +49,10 @@ const SidedBar = styled.aside`
 
     font-weight: bold;
     font-size: 14px;
+  }
+
+  button[type="button"] {
+    margin-bottom: 8px;
   }
 
   background-color: ${colors.foreground};
@@ -89,6 +95,8 @@ const Cart = () => {
   const { isOpen, items } = useSelector((state: RootReducer) => state.cart);
   const dispatch = useDispatch();
 
+  const [paymentStep, setPaymentStep] = useState(0);
+
   const closeCart = () => {
     dispatch(close());
   };
@@ -103,32 +111,58 @@ const Cart = () => {
     <Container style={{ display: isOpen ? "flex" : "none" }}>
       <Overlay onClick={closeCart} />
       <SidedBar>
-        <ul className="cart-list">
-          {items.map((item) => (
-            <Item key={item.id}>
-              <img className="cart-image" src={item.foto} height={80} />
-              <div className="cart-content">
-                <h3>{item.nome}</h3>
-                <span>{priceFormat(item.preco)}</span>
-              </div>
-              <img
-                className="trash-icon-img"
-                src={trashIcon}
-                alt="Trash Icon"
-                title="Delete"
-                height={16}
-                onClick={() => dispatch(remove(item.id))}
-              />
-            </Item>
-          ))}
-        </ul>
-        <div className="price-total">
-          <p>Valor total</p>
-          <span>{priceFormat(getTotalPrice())}</span>
-        </div>
-        <Button profileBtn type="button">
-          Continuar com a entrega
-        </Button>
+        {paymentStep === 0 ? (
+          <>
+            <ul className="cart-list">
+              {items.map((item) => (
+                <Item key={item.id}>
+                  <img className="cart-image" src={item.foto} height={80} />
+                  <div className="cart-content">
+                    <h3>{item.nome}</h3>
+                    <span>{priceFormat(item.preco)}</span>
+                  </div>
+                  <img
+                    className="trash-icon-img"
+                    src={trashIcon}
+                    alt="Trash Icon"
+                    title="Delete"
+                    height={16}
+                    onClick={() => dispatch(remove(item.id))}
+                  />
+                </Item>
+              ))}
+            </ul>
+            <div className="price-total">
+              <p>Valor total</p>
+              <span>{priceFormat(getTotalPrice())}</span>
+            </div>
+            <Button onClick={() => setPaymentStep(1)} profileBtn type="button">
+              Continuar com a entrega
+            </Button>
+          </>
+        ) : paymentStep === 1 ? (
+          <>
+            <h4>Entrega</h4>
+            <Shipment />
+            <Button onClick={() => setPaymentStep(2)} profileBtn type="button">
+              Continuar com o pagamento
+            </Button>
+            <Button onClick={() => setPaymentStep(0)} profileBtn type="button">
+              Voltar para o carrinho
+            </Button>
+          </>
+        ) : (
+          <>
+            <h4>Pagamento - Valor a pagar {priceFormat(getTotalPrice())}</h4>
+            <CardPayment />
+            <Button onClick={() => setPaymentStep(2)} profileBtn type="button">
+              Finalizar o pagamento
+            </Button>
+            <Button onClick={() => setPaymentStep(1)} profileBtn type="button">
+              Voltar para a ediçao de endereço
+            </Button>
+          </>
+        )}
       </SidedBar>
     </Container>
   );
