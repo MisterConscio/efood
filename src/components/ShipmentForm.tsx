@@ -54,23 +54,23 @@ export function CardPayment() {
     <Form>
       <label htmlFor="CardName">
         Nome no cartão
-        <input id="CardName" type="text" />
+        <input name="CardName" id="CardName" type="text" />
       </label>
       <label htmlFor="CardNumber">
         Número do cartão
-        <input id="CardNumber" type="text" />
+        <input name="CardNumber" id="CardNumber" type="text" />
       </label>
       <label htmlFor="CardCVV">
         CVV
-        <input id="CardCVV" type="text" />
+        <input name="CardCVV" id="CardCVV" type="text" />
       </label>
       <label htmlFor="ExpireMonth">
         Mês de vencimento
-        <input id="ExpireMonth" type="text" />
+        <input name="ExpireMonth" id="ExpireMonth" type="text" />
       </label>
       <label htmlFor="ExpireYear">
         Ano de Vencimento
-        <input id="ExpireYear" type="text" />
+        <input name="ExpireYear" id="ExpireYear" type="text" />
       </label>
     </Form>
   );
@@ -81,27 +81,27 @@ export default function Shipment() {
     <Form>
       <label htmlFor="Name">
         Quem irá receber
-        <input id="Name" type="text" />
+        <input name="Name" id="Name" type="text" />
       </label>
       <label htmlFor="Address">
         Endereço
-        <input id="Address" type="text" />
+        <input name="Address" id="Address" type="text" />
       </label>
       <label htmlFor="City">
         Cidade
-        <input id="City" type="text" />
+        <input name="City" id="City" type="text" />
       </label>
       <label htmlFor="Cep">
         CEP
-        <input id="Cep" type="text" />
+        <input name="Cep" id="Cep" type="text" />
       </label>
       <label htmlFor="Number">
         Número
-        <input id="Number" type="text" />
+        <input name="Number" id="Number" type="text" />
       </label>
       <label htmlFor="Additional">
         Complemento (Opcional)
-        <input id="Additional" type="text" />
+        <input name="Additional" id="Additional" type="text" />
       </label>
     </Form>
   );
