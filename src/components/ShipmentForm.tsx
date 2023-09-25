@@ -1,5 +1,10 @@
 import styled from "styled-components";
 import { colors } from "../styles";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { usePurchaseMutation } from "../services/api";
+import { useSelector } from "react-redux";
+import { RootReducer } from "../store";
 
 const Form = styled.form`
   padding-block: 1rem 2rem;
@@ -77,6 +82,65 @@ export function CardPayment() {
 }
 
 export default function Shipment() {
+  const [purchase, { data, isSuccess, isLoading }] = usePurchaseMutation();
+  const { items } = useSelector((state: RootReducer) => state.cart);
+
+  const form = useFormik({
+    initialValues: {
+      name: "",
+      email: "",
+      city: "",
+      cep: "",
+      number: "",
+      complement: "",
+      cardName: "",
+      cardNumber: "",
+      cardCvv: "",
+      cardExpireMonth: "",
+      cardExpireYear: "",
+    },
+    validationSchema: Yup.object({
+      name: Yup.string()
+        .min(5, "O nome precisa ter pelo menos 5 caracteres")
+        .required("Obrigatório"),
+      email: Yup.string().email("Email inválido").required("Obrigatório"),
+      city: Yup.string().required("Obrigatório"),
+      cep: Yup.string().required("Obrigatório"),
+      number: Yup.string().required("Obrigatório"),
+      complement: Yup.string(),
+      cardName: Yup.string().required("Obrigatório"),
+      cardNumber: Yup.string().required("Obrigatório"),
+      cardCvv: Yup.string().required("Obrigatório"),
+      cardExpireMonth: Yup.string().required("Obrigatório"),
+      cardExpireYear: Yup.string().required("Obrigatório"),
+    }),
+    onSubmit: (values) => {
+      purchase({
+        products: items.map((item) => ({
+          id: item.id,
+          price: item.preco as number,
+        })),
+        delivery: {
+          name: values.name,
+          email: values.email,
+          city: values.city,
+          cep: values.cep,
+          number: values.number,
+          complement: values.complement,
+        },
+        payment: {
+          name: values.cardName,
+          number: values.cardNumber,
+          code: Number(values.cardCvv),
+          expires: {
+            month: Number(values.cardExpireMonth),
+            year: Number(values.cardExpireYear),
+          },
+        },
+      });
+    },
+  });
+
   return (
     <Form>
       <label htmlFor="Name">
