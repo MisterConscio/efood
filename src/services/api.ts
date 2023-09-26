@@ -15,7 +15,7 @@ type PurchasePayload = {
   // };
   delivery: {
     name: string;
-    email: string;
+    address: string;
     city: string;
     cep: string;
     number: string;

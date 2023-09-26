@@ -88,7 +88,7 @@ export default function Shipment() {
   const form = useFormik({
     initialValues: {
       name: "",
-      email: "",
+      address: "",
       city: "",
       cep: "",
       number: "",
@@ -103,7 +103,7 @@ export default function Shipment() {
       name: Yup.string()
         .min(5, "O nome precisa ter pelo menos 5 caracteres")
         .required("Obrigatório"),
-      email: Yup.string().email("Email inválido").required("Obrigatório"),
+      address: Yup.string().required("Obrigatório"),
       city: Yup.string().required("Obrigatório"),
       cep: Yup.string().required("Obrigatório"),
       number: Yup.string().required("Obrigatório"),
@@ -122,7 +122,7 @@ export default function Shipment() {
         })),
         delivery: {
           name: values.name,
-          email: values.email,
+          address: values.address,
           city: values.city,
           cep: values.cep,
           number: values.number,
@@ -142,30 +142,45 @@ export default function Shipment() {
   });
 
   return (
-    <Form>
+    <Form onSubmit={form.handleSubmit}>
       <label htmlFor="Name">
         Quem irá receber
-        <input name="Name" id="Name" type="text" />
+        <input value={form.values.name} name="Name" id="Name" type="text" />
       </label>
       <label htmlFor="Address">
         Endereço
-        <input name="Address" id="Address" type="text" />
+        <input
+          value={form.values.address}
+          name="Address"
+          id="Address"
+          type="text"
+        />
       </label>
       <label htmlFor="City">
         Cidade
-        <input name="City" id="City" type="text" />
+        <input value={form.values.city} name="City" id="City" type="text" />
       </label>
       <label htmlFor="Cep">
         CEP
-        <input name="Cep" id="Cep" type="text" />
+        <input value={form.values.cep} name="Cep" id="Cep" type="text" />
       </label>
       <label htmlFor="Number">
         Número
-        <input name="Number" id="Number" type="text" />
+        <input
+          value={form.values.number}
+          name="Number"
+          id="Number"
+          type="text"
+        />
       </label>
       <label htmlFor="Additional">
         Complemento (Opcional)
-        <input name="Additional" id="Additional" type="text" />
+        <input
+          value={form.values.complement}
+          name="Additional"
+          id="Additional"
+          type="text"
+        />
       </label>
     </Form>
   );
