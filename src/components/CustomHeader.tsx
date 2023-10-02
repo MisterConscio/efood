@@ -81,9 +81,9 @@ const Head = styled.header`
   }
 `;
 
-interface Props extends Restaurant { }
+// interface Props extends Restaurant { }
 
-const CustomHeader = ({ titulo, tipo, capa }: Props) => {
+const CustomHeader = ({ titulo, tipo, capa }: Restaurant) => {
   const { items } = useSelector((state: RootReducer) => state.cart);
   const dispatch = useDispatch();
 

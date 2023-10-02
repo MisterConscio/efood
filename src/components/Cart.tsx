@@ -10,7 +10,7 @@ import trashIcon from "../assets/images/trash-icon.png";
 import Button from "./Button";
 import { priceFormat } from "./ProfileCard";
 import { useState } from "react";
-import Shipment, { CardPayment } from "./ShipmentForm";
+import PaymentForm from "./PaymentForm";
 
 const Container = styled.div`
   position: fixed;
@@ -143,7 +143,7 @@ const Cart = () => {
         ) : paymentStep === 1 ? (
           <>
             <h4>Entrega</h4>
-            <Shipment />
+            <PaymentForm page={1} />
             <Button onClick={() => setPaymentStep(2)} profileBtn type="button">
               Continuar com o pagamento
             </Button>
@@ -154,10 +154,7 @@ const Cart = () => {
         ) : (
           <>
             <h4>Pagamento - Valor a pagar {priceFormat(getTotalPrice())}</h4>
-            <CardPayment />
-            <Button onClick={() => setPaymentStep(2)} profileBtn type="button">
-              Finalizar o pagamento
-            </Button>
+            <PaymentForm page={2} />
             <Button onClick={() => setPaymentStep(1)} profileBtn type="button">
               Voltar para a ediçao de endereço
             </Button>

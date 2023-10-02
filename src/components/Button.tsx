@@ -29,9 +29,10 @@ const Btn = styled.button<{ profileBtn: boolean }>`
 
 type Props = {
   children: string | string[];
-  type?: "button" | "reset" | undefined;
+  type?: "button" | "reset" | "submit" | undefined;
   profileBtn?: boolean;
   onClick?: MouseEventHandler;
+  disabled?: boolean;
 };
 
 const Button = ({
@@ -39,8 +40,14 @@ const Button = ({
   type = "button",
   profileBtn = false,
   onClick,
+  disabled,
 }: Props) => (
-  <Btn onClick={onClick} profileBtn={profileBtn} type={type}>
+  <Btn
+    onClick={onClick}
+    disabled={disabled}
+    profileBtn={profileBtn}
+    type={type}
+  >
     {children}
   </Btn>
 );

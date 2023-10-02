@@ -69,7 +69,7 @@ export const capitalizeWord = (word: string) => {
   return word.charAt(0).toUpperCase() + word.slice(1);
 };
 
-interface Props extends Restaurant { }
+// interface Props extends Restaurant { }
 
 const HomeCard = ({
   titulo,
@@ -79,7 +79,7 @@ const HomeCard = ({
   avaliacao,
   destacado,
   id,
-}: Props) => {
+}: Restaurant) => {
   return (
     <Card>
       <img
@@ -97,7 +97,7 @@ const HomeCard = ({
         <div className="card-title">
           <h3>{titulo}</h3>
           <div className="card-title-note">
-            <span>{avaliacao + " "}</span>
+            <span>{avaliacao.toString() + " "}</span>
             <img className="card-title-note-img" src={star} alt="Star" />
           </div>
         </div>

@@ -8,26 +8,25 @@ type Order = {
 
 type PurchasePayload = {
   products: Order[];
-  // billing: {
-  //   name: string;
-  //   email: string;
-  //   document: string;
-  // };
   delivery: {
-    name: string;
-    address: string;
-    city: string;
-    cep: string;
-    number: string;
-    complement: string;
+    receiver: string;
+    address: {
+      description: string;
+      city: string;
+      zipCode: string;
+      number: string;
+      complement: string;
+    };
   };
   payment: {
-    name?: string;
-    number?: string;
-    code?: number;
-    expires?: {
-      month: number;
-      year: number;
+    card: {
+      name?: string;
+      number?: string;
+      code?: number;
+      expires?: {
+        month: number;
+        year: number;
+      };
     };
   };
 };
