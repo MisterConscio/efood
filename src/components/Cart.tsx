@@ -1,19 +1,19 @@
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import MaskInput from "react-input-mask";
+import * as Yup from "yup";
+import { useFormik } from "formik";
 
 import { RootReducer } from "../store";
-import { clear, close, remove } from "../store/cart";
+import { close, remove } from "../store/cart";
 
 import styled from "styled-components";
 import { colors } from "../styles";
 import trashIcon from "../assets/images/trash-icon.png";
-import * as Yup from "yup";
 
 import Button from "./Button";
 import { priceFormat } from "../utils";
-import { useEffect, useState } from "react";
 import { usePurchaseMutation } from "../services/api";
-import { useFormik } from "formik";
 
 const Container = styled.div`
   position: fixed;
@@ -142,197 +142,15 @@ const Form = styled.form`
     background: ${colors.backgroundAlt};
 
     &.error {
-      outline: 2px solid crimson;
+      outline: 2px solid #665757;
     }
   }
-`;
 
-// export default function PaymentForm({ page = 1 }: { page: 1 | 2 }) {
-//   return (
-//     <>
-//       {isSuccess && data ? (
-//         <div>
-//           <h2>Pedido Realizado - {data.orderId}</h2>
-//           <p style={{ paddingBlock: "1rem" }}>
-//             Estamos felizes em informar que seu pedido já está em processo de
-//             preparação e, em breve, será entregue no endereço fornecido.
-//           </p>
-//           <p style={{ paddingBottom: "1rem" }}>
-//             Gostaríamos de ressaltar que nossos entregadores não estão
-//             autorizados a realizar cobranças extras.
-//           </p>
-//           <p style={{ paddingBottom: "1rem" }}>
-//             Lembre-se da importância de higienizar as mãos após o recebimento do
-//             pedido, garantindo assim sua segurança e bem-estar durante a
-//             refeição.
-//           </p>
-//           <p style={{ paddingBottom: "1rem" }}>
-//             Esperamos que desfrute de uma deliciosa e agradável experiência
-//             gastronômica. Bom apetite!
-//           </p>
-//
-//           <Button profileBtn type="button">
-//             Concluir
-//           </Button>
-//         </div>
-//       ) : (
-//         <Form onSubmit={form.handleSubmit}>
-//           {page === 1 ? (
-//             <>
-//               <label htmlFor="receiver">
-//                 Quem irá receber
-//                 <input
-//                   value={form.values.receiver}
-//                   onChange={form.handleChange}
-//                   onBlur={form.handleBlur}
-//                   className={checkInputHasError("receiver") ? "error" : ""}
-//                   name="receiver"
-//                   id="receiver"
-//                   type="text"
-//                 />
-//               </label>
-//               <label htmlFor="description">
-//                 Endereço
-//                 <input
-//                   value={form.values.description}
-//                   onChange={form.handleChange}
-//                   onBlur={form.handleBlur}
-//                   className={checkInputHasError("description") ? "error" : ""}
-//                   name="description"
-//                   id="description"
-//                   type="text"
-//                 />
-//               </label>
-//               <label htmlFor="city">
-//                 Cidade
-//                 <input
-//                   onChange={form.handleChange}
-//                   onBlur={form.handleBlur}
-//                   value={form.values.city}
-//                   className={checkInputHasError("city") ? "error" : ""}
-//                   name="city"
-//                   id="city"
-//                   type="text"
-//                 />
-//               </label>
-//               <label htmlFor="zipCode">
-//                 CEP
-//                 <MaskInput
-//                   mask="99999-999"
-//                   onChange={form.handleChange}
-//                   onBlur={form.handleBlur}
-//                   value={form.values.zipCode}
-//                   className={checkInputHasError("zipCode") ? "error" : ""}
-//                   name="zipCode"
-//                   id="zipCode"
-//                   type="text"
-//                 />
-//               </label>
-//               <label htmlFor="number">
-//                 Número
-//                 <input
-//                   onChange={form.handleChange}
-//                   onBlur={form.handleBlur}
-//                   value={form.values.number}
-//                   className={checkInputHasError("number") ? "error" : ""}
-//                   name="number"
-//                   id="number"
-//                   type="text"
-//                 />
-//               </label>
-//               <label htmlFor="complement">
-//                 Complemento (Opcional)
-//                 <input
-//                   onChange={form.handleChange}
-//                   onBlur={form.handleBlur}
-//                   value={form.values.complement}
-//                   className={checkInputHasError("complement") ? "error" : ""}
-//                   name="complement"
-//                   id="complement"
-//                   type="text"
-//                 />
-//               </label>
-//             </>
-//           ) : (
-//             <>
-//               <label htmlFor="cardName">
-//                 Nome no cartão
-//                 <input
-//                   onChange={form.handleChange}
-//                   onBlur={form.handleBlur}
-//                   value={form.values.cardName}
-//                   className={checkInputHasError("cardName") ? "error" : ""}
-//                   name="cardName"
-//                   id="cardName"
-//                   type="text"
-//                 />
-//               </label>
-//               <label htmlFor="cardNumber">
-//                 Número do cartão
-//                 <MaskInput
-//                   mask="9999 9999 9999 9999"
-//                   onChange={form.handleChange}
-//                   onBlur={form.handleBlur}
-//                   value={form.values.cardNumber}
-//                   className={checkInputHasError("cardNumber") ? "error" : ""}
-//                   name="cardNumber"
-//                   id="cardNumber"
-//                   type="text"
-//                 />
-//               </label>
-//               <label htmlFor="cardCode">
-//                 CVV
-//                 <MaskInput
-//                   mask="999"
-//                   onChange={form.handleChange}
-//                   onBlur={form.handleBlur}
-//                   value={form.values.cardCode}
-//                   className={checkInputHasError("cardCode") ? "error" : ""}
-//                   name="cardCode"
-//                   id="cardCode"
-//                   type="text"
-//                 />
-//               </label>
-//               <label htmlFor="cardExpireMonth">
-//                 Mês de vencimento
-//                 <MaskInput
-//                   mask="99"
-//                   onChange={form.handleChange}
-//                   onBlur={form.handleBlur}
-//                   value={form.values.cardExpireMonth}
-//                   className={
-//                     checkInputHasError("cardExpireMonth") ? "error" : ""
-//                   }
-//                   name="cardExpireMonth"
-//                   id="cardExpireMonth"
-//                   type="text"
-//                 />
-//               </label>
-//               <label htmlFor="cardExpireYear">
-//                 Ano de Vencimento
-//                 <MaskInput
-//                   mask="9999"
-//                   value={form.values.cardExpireYear}
-//                   onChange={form.handleChange}
-//                   onBlur={form.handleBlur}
-//                   className={
-//                     checkInputHasError("cardExpireYear") ? "error" : ""
-//                   }
-//                   name="cardExpireYear"
-//                   id="cardExpireYear"
-//                   type="text"
-//                 />
-//               </label>
-//               <Button profileBtn disabled={isLoading} type="submit">
-//                 {isLoading ? "Finalizando compra..." : "Finalizar comprar"}
-//               </Button>
-//             </>
-//           )}
-//         </Form>
-//       )}
-//     </>
-//   );
-// }
+  button[type="submit"] {
+    margin-top: 1.5rem;
+    margin-bottom: 0;
+  }
+`;
 
 const Cart = () => {
   const { isOpen, items } = useSelector((state: RootReducer) => state.cart);
@@ -340,12 +158,6 @@ const Cart = () => {
   const dispatch = useDispatch();
 
   const [paymentStep, setPaymentStep] = useState(0);
-
-  useEffect(() => {
-    if (isSuccess) {
-      dispatch(clear());
-    }
-  }, [isSuccess, dispatch]);
 
   const closeCart = () => {
     dispatch(close());
@@ -372,19 +184,6 @@ const Cart = () => {
       cardExpireYear: "",
     },
     validationSchema: Yup.object({
-      // receiver: Yup.string()
-      //   .min(5, "O nome precisa ter pelo menos 5 caracteres")
-      //   .required("Obrigatório"),
-      // description: Yup.string().required("Obrigatório"),
-      // city: Yup.string().required("Obrigatório"),
-      // zipCode: Yup.string().min(5).max(5).required("Obrigatório"),
-      // number: Yup.string().required("Obrigatório"),
-      // complement: Yup.string(),
-      // cardName: Yup.string().required("Obrigatório"),
-      // cardNumber: Yup.string().required("Obrigatório"),
-      // cardCode: Yup.string().required("Obrigatório"),
-      // cardExpireMonth: Yup.string().required("Obrigatório"),
-      // cardExpireYear: Yup.string().required("Obrigatório"),
       receiver: Yup.string().when((_, schema) =>
         paymentStep === 1 ? schema.required("Obrigatório") : schema,
       ),
@@ -419,8 +218,6 @@ const Cart = () => {
         paymentStep === 2 ? schema.required("Obrigatório") : schema,
       ),
     }),
-    // onSubmit: (values) => console.log("Submited: ", values),
-    // validate: (values) => console.log(values),
     onSubmit: (values, { resetForm }) => {
       purchase({
         products: items.map((item) => ({
@@ -462,14 +259,10 @@ const Cart = () => {
     return hasError;
   };
 
-  if (items.length === 0 && !isSuccess) {
-    closeCart();
-  }
-
   function handleFinnish() {
-    form.resetForm;
     closeCart();
     setPaymentStep(0);
+    window.location.reload();
   }
 
   return (
@@ -508,7 +301,6 @@ const Cart = () => {
         ) : paymentStep === 1 ? (
           <>
             <h4>Entrega</h4>
-            {/*<PaymentForm page={1} />*/}
             <Form onSubmit={form.handleSubmit}>
               <label htmlFor="receiver">
                 Quem irá receber
@@ -623,7 +415,6 @@ const Cart = () => {
                 <h4>
                   Pagamento - Valor a pagar {priceFormat(getTotalPrice())}
                 </h4>
-                {/*<PaymentForm page={2} />*/}
                 <Form onSubmit={form.handleSubmit}>
                   <label htmlFor="cardName">
                     Nome no cartão
@@ -698,14 +489,14 @@ const Cart = () => {
                   <Button profileBtn disabled={isLoading} type="submit">
                     {isLoading ? "Finalizando compra..." : "Finalizar comprar"}
                   </Button>
+                  <Button
+                    onClick={() => setPaymentStep(1)}
+                    profileBtn
+                    type="button"
+                  >
+                    Voltar para a ediçao de endereço
+                  </Button>
                 </Form>
-                <Button
-                  onClick={() => setPaymentStep(1)}
-                  profileBtn
-                  type="button"
-                >
-                  Voltar para a ediçao de endereço
-                </Button>
               </>
             )}
           </>

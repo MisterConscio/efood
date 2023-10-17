@@ -88,6 +88,9 @@ const CustomHeader = ({ titulo, tipo, capa }: Restaurant) => {
   const dispatch = useDispatch();
 
   const openCart = () => {
+    if (items.length === 0) {
+      return;
+    }
     dispatch(open());
   };
 
