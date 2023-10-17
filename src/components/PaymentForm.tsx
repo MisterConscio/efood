@@ -1,12 +1,17 @@
-import styled from "styled-components";
-import InputMask from "react-input-mask";
-import { colors } from "../styles";
+import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import MaskInput from "react-input-mask";
+
+import styled from "styled-components";
+import { colors } from "../styles";
+
 import { usePurchaseMutation } from "../services/api";
-import { useSelector } from "react-redux";
 import { RootReducer } from "../store";
+import { clear } from "../store/cart";
+
 import Button from "./Button";
+import { useEffect } from "react";
 
 const Form = styled.form`
   padding-block: 1rem 2rem;
@@ -27,7 +32,7 @@ const Form = styled.form`
     grid-column: span 3;
   }
 
-  label[for="cardCVV"] {
+  label[for="cardCode"] {
     grid-column: span 1;
   }
 
@@ -53,12 +58,24 @@ const Form = styled.form`
 
     color: #4b;
     background: ${colors.backgroundAlt};
+
+    &.error {
+      outline: 2px solid crimson;
+    }
   }
 `;
 
 export default function PaymentForm({ page = 1 }: { page: 1 | 2 }) {
   const [purchase, { data, isSuccess, isLoading }] = usePurchaseMutation();
   const { items } = useSelector((state: RootReducer) => state.cart);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(clear());
+    }
+  }, [isSuccess, dispatch]);
 
   const form = useFormik({
     initialValues: {
@@ -70,25 +87,60 @@ export default function PaymentForm({ page = 1 }: { page: 1 | 2 }) {
       complement: "",
       cardName: "",
       cardNumber: "",
-      cardCvv: "",
+      cardCode: "",
       cardExpireMonth: "",
       cardExpireYear: "",
     },
     validationSchema: Yup.object({
-      receiver: Yup.string()
-        .min(5, "O nome precisa ter pelo menos 5 caracteres")
-        .required("Obrigatório"),
-      description: Yup.string().required("Obrigatório"),
-      city: Yup.string().required("Obrigatório"),
-      zipCode: Yup.string().min(5).max(5).required("Obrigatório"),
-      number: Yup.string().required("Obrigatório"),
-      complement: Yup.string(),
-      cardName: Yup.string().required("Obrigatório"),
-      cardNumber: Yup.string().required("Obrigatório"),
-      cardCvv: Yup.string().required("Obrigatório"),
-      cardExpireMonth: Yup.string().required("Obrigatório"),
-      cardExpireYear: Yup.string().required("Obrigatório"),
+      // receiver: Yup.string()
+      //   .min(5, "O nome precisa ter pelo menos 5 caracteres")
+      //   .required("Obrigatório"),
+      // description: Yup.string().required("Obrigatório"),
+      // city: Yup.string().required("Obrigatório"),
+      // zipCode: Yup.string().min(5).max(5).required("Obrigatório"),
+      // number: Yup.string().required("Obrigatório"),
+      // complement: Yup.string(),
+      // cardName: Yup.string().required("Obrigatório"),
+      // cardNumber: Yup.string().required("Obrigatório"),
+      // cardCode: Yup.string().required("Obrigatório"),
+      // cardExpireMonth: Yup.string().required("Obrigatório"),
+      // cardExpireYear: Yup.string().required("Obrigatório"),
+      receiver: Yup.string().when((_, schema) =>
+        page === 1 ? schema.required("Obrigatório") : schema,
+      ),
+      description: Yup.string().when((_, schema) =>
+        page === 1 ? schema.required("Obrigatório") : schema,
+      ),
+      city: Yup.string().when((_, schema) =>
+        page === 1 ? schema.required("Obrigatório") : schema,
+      ),
+      zipCode: Yup.string().when((_, schema) =>
+        page === 1 ? schema.required("Obrigatório") : schema,
+      ),
+      number: Yup.string().when((_, schema) =>
+        page === 1 ? schema.required("Obrigatório") : schema,
+      ),
+      complement: Yup.string().when((_, schema) =>
+        page === 1 ? schema : schema,
+      ),
+      cardName: Yup.string().when((_, schema) =>
+        page !== 1 ? schema.required("Obrigatório") : schema,
+      ),
+      cardNumber: Yup.string().when((_, schema) =>
+        page !== 1 ? schema.required("Obrigatório") : schema,
+      ),
+      cardCode: Yup.string().when((_, schema) =>
+        page !== 1 ? schema.required("Obrigatório") : schema,
+      ),
+      cardExpireMonth: Yup.string().when((_, schema) =>
+        page !== 1 ? schema.required("Obrigatório") : schema,
+      ),
+      cardExpireYear: Yup.string().when((_, schema) =>
+        page !== 1 ? schema.required("Obrigatório") : schema,
+      ),
     }),
+    // onSubmit: (values) => console.log("Submited: ", values),
+    // validate: (values) => console.log(values),
     onSubmit: (values) => {
       purchase({
         products: items.map((item) => ({
@@ -101,7 +153,7 @@ export default function PaymentForm({ page = 1 }: { page: 1 | 2 }) {
             description: values.description,
             city: values.city,
             zipCode: values.zipCode,
-            number: values.number,
+            number: Number(values.number),
             complement: values.complement,
           },
         },
@@ -109,7 +161,7 @@ export default function PaymentForm({ page = 1 }: { page: 1 | 2 }) {
           card: {
             name: values.cardName,
             number: values.cardNumber,
-            code: Number(values.cardCvv),
+            code: Number(values.cardCode),
             expires: {
               month: Number(values.cardExpireMonth),
               year: Number(values.cardExpireYear),
@@ -120,13 +172,49 @@ export default function PaymentForm({ page = 1 }: { page: 1 | 2 }) {
     },
   });
 
+  const checkInputHasError = (field: string) => {
+    const isTouched = field in form.touched;
+    const isInvalid = field in form.errors;
+
+    const hasError = isTouched && isInvalid;
+
+    return hasError;
+  };
+
+  // if (items.length === 0 && !isSuccess) {
+  //   dispatch(close());
+  // }
+
   return (
     <>
       {isSuccess && data ? (
-        <p>Pedido feito</p>
+        <div>
+          <h2>Pedido Realizado - {data.orderId}</h2>
+          <p style={{ paddingBlock: "1rem" }}>
+            Estamos felizes em informar que seu pedido já está em processo de
+            preparação e, em breve, será entregue no endereço fornecido.
+          </p>
+          <p style={{ paddingBottom: "1rem" }}>
+            Gostaríamos de ressaltar que nossos entregadores não estão
+            autorizados a realizar cobranças extras.
+          </p>
+          <p style={{ paddingBottom: "1rem" }}>
+            Lembre-se da importância de higienizar as mãos após o recebimento do
+            pedido, garantindo assim sua segurança e bem-estar durante a
+            refeição.
+          </p>
+          <p style={{ paddingBottom: "1rem" }}>
+            Esperamos que desfrute de uma deliciosa e agradável experiência
+            gastronômica. Bom apetite!
+          </p>
+
+          <Button profileBtn type="button">
+            Concluir
+          </Button>
+        </div>
       ) : (
         <Form onSubmit={form.handleSubmit}>
-          {page == 1 ? (
+          {page === 1 ? (
             <>
               <label htmlFor="receiver">
                 Quem irá receber
@@ -134,6 +222,7 @@ export default function PaymentForm({ page = 1 }: { page: 1 | 2 }) {
                   value={form.values.receiver}
                   onChange={form.handleChange}
                   onBlur={form.handleBlur}
+                  className={checkInputHasError("receiver") ? "error" : ""}
                   name="receiver"
                   id="receiver"
                   type="text"
@@ -145,6 +234,7 @@ export default function PaymentForm({ page = 1 }: { page: 1 | 2 }) {
                   value={form.values.description}
                   onChange={form.handleChange}
                   onBlur={form.handleBlur}
+                  className={checkInputHasError("description") ? "error" : ""}
                   name="description"
                   id="description"
                   type="text"
@@ -156,6 +246,7 @@ export default function PaymentForm({ page = 1 }: { page: 1 | 2 }) {
                   onChange={form.handleChange}
                   onBlur={form.handleBlur}
                   value={form.values.city}
+                  className={checkInputHasError("city") ? "error" : ""}
                   name="city"
                   id="city"
                   type="text"
@@ -163,11 +254,12 @@ export default function PaymentForm({ page = 1 }: { page: 1 | 2 }) {
               </label>
               <label htmlFor="zipCode">
                 CEP
-                <InputMask
+                <MaskInput
                   mask="99999-999"
                   onChange={form.handleChange}
                   onBlur={form.handleBlur}
                   value={form.values.zipCode}
+                  className={checkInputHasError("zipCode") ? "error" : ""}
                   name="zipCode"
                   id="zipCode"
                   type="text"
@@ -179,6 +271,7 @@ export default function PaymentForm({ page = 1 }: { page: 1 | 2 }) {
                   onChange={form.handleChange}
                   onBlur={form.handleBlur}
                   value={form.values.number}
+                  className={checkInputHasError("number") ? "error" : ""}
                   name="number"
                   id="number"
                   type="text"
@@ -190,6 +283,7 @@ export default function PaymentForm({ page = 1 }: { page: 1 | 2 }) {
                   onChange={form.handleChange}
                   onBlur={form.handleBlur}
                   value={form.values.complement}
+                  className={checkInputHasError("complement") ? "error" : ""}
                   name="complement"
                   id="complement"
                   type="text"
@@ -204,6 +298,7 @@ export default function PaymentForm({ page = 1 }: { page: 1 | 2 }) {
                   onChange={form.handleChange}
                   onBlur={form.handleBlur}
                   value={form.values.cardName}
+                  className={checkInputHasError("cardName") ? "error" : ""}
                   name="cardName"
                   id="cardName"
                   type="text"
@@ -211,35 +306,40 @@ export default function PaymentForm({ page = 1 }: { page: 1 | 2 }) {
               </label>
               <label htmlFor="cardNumber">
                 Número do cartão
-                <InputMask
+                <MaskInput
                   mask="9999 9999 9999 9999"
                   onChange={form.handleChange}
                   onBlur={form.handleBlur}
                   value={form.values.cardNumber}
+                  className={checkInputHasError("cardNumber") ? "error" : ""}
                   name="cardNumber"
                   id="cardNumber"
                   type="text"
                 />
               </label>
-              <label htmlFor="cardCvv">
+              <label htmlFor="cardCode">
                 CVV
-                <InputMask
+                <MaskInput
                   mask="999"
                   onChange={form.handleChange}
                   onBlur={form.handleBlur}
-                  value={form.values.cardCvv}
-                  name="cardCvv"
-                  id="cardCvv"
+                  value={form.values.cardCode}
+                  className={checkInputHasError("cardCode") ? "error" : ""}
+                  name="cardCode"
+                  id="cardCode"
                   type="text"
                 />
               </label>
               <label htmlFor="cardExpireMonth">
                 Mês de vencimento
-                <InputMask
+                <MaskInput
                   mask="99"
                   onChange={form.handleChange}
                   onBlur={form.handleBlur}
                   value={form.values.cardExpireMonth}
+                  className={
+                    checkInputHasError("cardExpireMonth") ? "error" : ""
+                  }
                   name="cardExpireMonth"
                   id="cardExpireMonth"
                   type="text"
@@ -247,11 +347,14 @@ export default function PaymentForm({ page = 1 }: { page: 1 | 2 }) {
               </label>
               <label htmlFor="cardExpireYear">
                 Ano de Vencimento
-                <InputMask
-                  mask="99"
+                <MaskInput
+                  mask="9999"
                   value={form.values.cardExpireYear}
                   onChange={form.handleChange}
                   onBlur={form.handleBlur}
+                  className={
+                    checkInputHasError("cardExpireYear") ? "error" : ""
+                  }
                   name="cardExpireYear"
                   id="cardExpireYear"
                   type="text"

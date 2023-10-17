@@ -14,7 +14,7 @@ type PurchasePayload = {
       description: string;
       city: string;
       zipCode: string;
-      number: string;
+      number: number;
       complement: string;
     };
   };

@@ -7,6 +7,7 @@ import star from "../assets/images/estrela.jpg";
 import Button from "./Button";
 import { Link } from "react-router-dom";
 import { Restaurant } from "../pages/Home";
+import { capitalizeWord } from "../utils";
 
 const Card = styled.div`
   border: 1px solid ${colors.foreground};
@@ -64,10 +65,6 @@ const Card = styled.div`
     }
   }
 `;
-
-export const capitalizeWord = (word: string) => {
-  return word.charAt(0).toUpperCase() + word.slice(1);
-};
 
 // interface Props extends Restaurant { }
 

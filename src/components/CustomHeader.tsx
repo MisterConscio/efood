@@ -10,7 +10,7 @@ import logo from "../assets/images/logo.jpg";
 import headerBg from "../assets/images/header-bg.jpg";
 
 import { Restaurant } from "../pages/Home";
-import { capitalizeWord } from "./HomeCard";
+import { capitalizeWord } from "../utils";
 
 const Head = styled.header`
   background-image: url("${headerBg}");

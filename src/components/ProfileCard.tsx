@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { add, open } from "../store/cart";
 import { Cardapio } from "../pages/Home";
+import { priceFormat } from "../utils";
 
 const Card = styled.div`
   background-color: ${colors.foreground};
@@ -108,13 +109,6 @@ const Dialog = styled.dialog`
   background-color: ${colors.foreground};
   color: ${colors.foregroundAlt};
 `;
-
-export const priceFormat = (price = 0) => {
-  return new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  }).format(price);
-};
 
 type Props = {
   cardapio: Cardapio;
