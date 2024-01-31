@@ -20,6 +20,11 @@ const Head = styled.header`
     font-size: 36px;
     text-wrap: balance;
   }
+  @media (max-width: 768px) {
+    h2 {
+      margin-top: 2rem;
+    }
+  }
 `;
 
 const Header = () => (
@@ -30,7 +35,7 @@ const Header = () => (
     <h2>
       Viva experiências gastronômicas
       <p>no conforto da sua casa</p>
-          </h2>
+    </h2>
   </Head>
 );
 

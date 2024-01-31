@@ -13,11 +13,10 @@ const Card = styled.div`
   border: 1px solid ${colors.foreground};
   background-color: white;
 
-  max-width: 472px;
   position: relative;
 
   .card-img {
-    transform: translate(-1px, -1px);
+    width: 100%;
     object-fit: cover;
   }
 
@@ -45,24 +44,20 @@ const Card = styled.div`
   .card-title-note {
     display: flex;
     gap: 8px;
+    align-items: center;
 
     font-size: 18px;
     font-weight: bold;
+  }
+
+  .card-title-note-img {
+    width: 100%;
   }
 
   .card-desc {
     font-size: 14px;
     line-height: 22px;
     margin-bottom: 16px;
-  }
-
-  @media (max-width: 768px) {
-    max-width: 300px;
-
-    .card-img {
-      max-width: 300px;
-      transform: translate(-2px, -2px);
-    }
   }
 `;
 

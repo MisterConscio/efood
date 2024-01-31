@@ -23,7 +23,7 @@ const Head = styled.header`
   }
 
   .title {
-    padding-block: 40px;
+    padding: 40px 2rem;
 
     display: flex;
     justify-content: space-between;
@@ -40,6 +40,11 @@ const Head = styled.header`
     h3:last-child {
       text-align: right;
       cursor: pointer;
+    }
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 1rem;
+      padding-block: 1rem;
     }
   }
 
@@ -96,7 +101,7 @@ const CustomHeader = ({ titulo, tipo, capa }: Restaurant) => {
 
   return (
     <Head>
-      <div className="title container">
+      <div className="title">
         <h3>Restaurantes</h3>
         <Link to="/">
           <img src={logo} alt="Logo" />

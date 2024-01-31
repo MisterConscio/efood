@@ -59,6 +59,10 @@ const SidedBar = styled.aside`
     margin-bottom: 8px;
   }
 
+  @media (max-width: 768px) {
+    max-width: 300px;
+  }
+
   background-color: ${colors.foreground};
   color: ${colors.background};
 `;

@@ -11,7 +11,13 @@ const Grid = styled.main`
   grid-template-columns: repeat(3, auto);
   gap: 32px;
 
+  padding-inline: 2rem;
+
   margin-bottom: 120px;
+
+  > * {
+    min-width: 0;
+  }
 
   @media (max-width: 768px) {
     grid-template-columns: repeat(1, auto);

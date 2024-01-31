@@ -16,6 +16,7 @@ const Card = styled.div`
   padding: 8px;
 
   .card-img {
+    width: 100%;
     object-fit: cover;
   }
 
@@ -38,18 +39,13 @@ const Card = styled.div`
   }
 
   @media (max-width: 768px) {
-    max-width: 300px;
-
-    .card-img {
-      width: 100%;
-    }
-  }
+    max-width: 600px;
 `;
 
 const Dialog = styled.dialog`
   margin: auto;
   padding: 0;
-  max-width: min(1000px, 70vw);
+  max-width: min(1000px, 100% - 3rem);
 
   border: none;
 
@@ -76,6 +72,7 @@ const Dialog = styled.dialog`
 
   .modal-content {
     display: flex;
+    gap: 0.5rem;
     flex-direction: column;
     justify-content: space-around;
 
@@ -108,6 +105,15 @@ const Dialog = styled.dialog`
 
   background-color: ${colors.foreground};
   color: ${colors.foregroundAlt};
+
+  @media (max-width: 768px) {
+    .modal-media > img {
+      max-width: 100%;
+    }
+    .modal-body {
+      flex-wrap: wrap;
+    }
+  }
 `;
 
 type Props = {
